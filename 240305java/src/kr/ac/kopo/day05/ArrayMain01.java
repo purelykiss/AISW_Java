@@ -22,6 +22,13 @@ public class ArrayMain01 {
 			arr[i] = Integer.parseInt(sc.nextLine());
 		}
 		
+		System.out.println("< PRINT >");
+		//System.out.println(arr[0] + " " + arr[1] + " " + arr[2]);
+		for(int i = 0; i < arr.length; i++ ) {
+			System.out.print(arr[i] + " ");
+		}
+		System.out.println();
+		
 		/*
 		System.out.print("1\'s num : ");
 		int num = sc.nextInt();
