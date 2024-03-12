@@ -76,5 +76,7 @@ public class Assignment01 {
 		}
 		System.out.println();
 		System.out.println("홀수의 총합 : " + oddSum);		//미리 계산한 합
+		
+		sc.close();
 	}
 }
