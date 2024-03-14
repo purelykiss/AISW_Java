@@ -12,17 +12,20 @@ package kr.ac.kopo.day08;
 
 public class MethodMain01 {
 	
-	static void printStar() {
-		System.out.println("##########");
+	static void printStar(char ch, int cnt) {
+		for(int i = 0; i < cnt; i++) {
+			System.out.print(ch);	
+		}
+		System.out.println();
 	}
 	
 	public static void main(String[] args) {
-		printStar();
+		printStar('*', 10);
 		System.out.println("Hello");
-		printStar();
+		printStar('!', 5);
 		System.out.println("Hi");
-		printStar();
+		printStar('-', 20);
 		System.out.println("Good-bye");
-		printStar();
+		printStar('#', 16);
 	}
 }
