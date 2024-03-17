@@ -24,7 +24,7 @@ class Car{
 
 public class ConstructorMain01 {
 	public static void main(String[] args) {
-		new Car();	//만약 생성자가 하나이상 존재하면 default 생성자가 없음! 반드시 생성자를 하나이상 만들 경우 디폴트 생성자를 만들것!(아니면 그냥 만드는 습관을)
+		//new Car();	//만약 생성자가 하나이상 존재하면 default 생성자가 없음! 반드시 생성자를 하나이상 만들 경우 디폴트 생성자를 만들것!(아니면 그냥 만드는 습관을)
 		new Car("소나타");
 	}
 }
