@@ -8,8 +8,10 @@ public class LottoView {
 	}
 	
 	public void process() {
-		getInput();
-		activateLottoSet();
+		while(true) {
+			getInput();
+			activateLottoSet();
+		}
 	}
 	
 	public void getInput() {
@@ -21,6 +23,6 @@ public class LottoView {
 	}
 	
 	public void activateLottoSet() {
-		
+		lu.ActivateLotto();
 	}
 }
