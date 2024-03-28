@@ -1,5 +1,6 @@
 package kr.ac.kopo.day17.lotto01;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class LottoUtil {
@@ -15,13 +16,27 @@ public class LottoUtil {
 	}
 	
 	public void setLotto(int num) throws Exception{
-		if(num >= 0 && num < ls.length)
-			curLotteSet = num;
+		if(num >= 1 && num <= ls.length)
+			curLotteSet = num-1;
+		else if(num == ls.length+1)
+			System.exit(0);
 		else
 			throw new Exception("ls 배열의 범위를 넘었습니다.");
 	}
-	public int[] getLotto() {
+	
+	public String getLottoName() {
+		return ls[curLotteSet].getName();
+	}
+	
+	public int[] getLottoNum() {
 		return ls[curLotteSet].setNumber();
+	}
+	
+	public void ActivateLotto() {
+		System.out.println("다음은 로또 번호 뽑기 방법입니다.");
+		System.out.println(getLottoName());
+		System.out.println("번호를 뽑습니다 : ");
+		System.out.println(Arrays.toString(getLottoNum()));
 	}
 	
 	public void lobby() {
@@ -30,6 +45,7 @@ public class LottoUtil {
 			
 			System.out.println((i+1) + ". " + ls[i].getName());
 		}
+		System.out.println((ls.length+1) + ". 종료");
 		System.out.println("번호를 고르십시오");	
 	}
 	
