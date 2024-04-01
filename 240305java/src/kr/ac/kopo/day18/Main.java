@@ -5,36 +5,33 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Main{
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		String str = br.readLine();
-		
-		List<Integer> num = new LinkedList<Integer>();
-		
-		for(int i = str.length()-1; i >= 0; i--) {
-			num.add(str.charAt(i) - '0');	
-		}
-		
-		int over = 0;
-		
-		for(int i = 0; i < num.size(); i++) {
-			num.set(i, num.get(i) * 4 + over);
-			over = num.get(i) / 10;
-			num.set(i, num.get(i) % 10);
-			if(i == num.size()-1 && over > 0){
-				num.add(0);
-			}
-		}
-		
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		
-		for(int i = num.size()-1; i >= 0; i--) {
-			bw.write(Integer.toString(num.get(i)));	
+		String str = br.readLine();
+		int[] alphabet = new int[26];
+
+		boolean flagSpace = false;
+		
+		for(int i = 0; i < alphabet.length; i++) {
+			if(flagSpace) {
+				bw.write(" ");
+				flagSpace = false;
+			}
+			flagSpace = true;
+			
+			alphabet[i] = -1;
+			for(int j = 0; j < str.length(); j++) {
+				if(str.charAt(j) == (char)('a' + i)) {
+					alphabet[i] = j;
+					break;
+				}
+			}
+			
+			bw.write(Integer.toString(alphabet[i]));
 		}
 
         bw.close();
