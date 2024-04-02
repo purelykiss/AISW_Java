@@ -5,35 +5,44 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.*;
 
 public class Main{
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		
-		String str = br.readLine();
-		int[] alphabet = new int[26];
-
-		boolean flagSpace = false;
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int max = Integer.parseInt(st.nextToken());
+		int move =  Integer.parseInt(st.nextToken());
 		
-		for(int i = 0; i < alphabet.length; i++) {
+		int[] balls = new int[max];
+		for(int i = 0; i < balls.length; i++) {
+			balls[i] = i + 1;
+		}
+		
+		for(int i = 0; i < move; i++) {
+			st = new StringTokenizer(br.readLine());
+			int change1 = Integer.parseInt(st.nextToken());
+			int change2 = Integer.parseInt(st.nextToken());
+			
+			int tmp = balls[change1-1];
+			balls[change1-1] = balls[change2-1];
+			balls[change2-1] = tmp;
+		}
+		
+		boolean flagSpace = false;
+		for(int i = 0; i < balls.length; i++) {
 			if(flagSpace) {
-				bw.write(" ");
 				flagSpace = false;
+				bw.write(" ");
 			}
 			flagSpace = true;
 			
-			alphabet[i] = -1;
-			for(int j = 0; j < str.length(); j++) {
-				if(str.charAt(j) == (char)('a' + i)) {
-					alphabet[i] = j;
-					break;
-				}
-			}
-			
-			bw.write(Integer.toString(alphabet[i]));
+			bw.write(Integer.toString(balls[i]));
 		}
-
+		
+		
         bw.close();
 	}
 }
