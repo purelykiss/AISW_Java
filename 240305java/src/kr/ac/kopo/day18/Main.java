@@ -12,22 +12,26 @@ public class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		
-		List<Integer> nums = new LinkedList();
+		int cnt = Integer.parseInt(br.readLine());
+		StringTokenizer st;
 		
-		for(int i = 0; i < 10; i++) {
-			nums.add(Integer.parseInt(br.readLine()));
-		}
-		
-		List<Integer> leftOver = new LinkedList();
-		
-		for(int i = 0; i < 10; i++) {
-			int tmp = nums.indexOf(i) % 42;
-			if(!leftOver.contains(tmp)){
-				leftOver.add(nums.indexOf(i));
+		boolean flagSpace = false;
+		for(int i = 0; i < cnt; i++) {
+			if(flagSpace) {
+				flagSpace = false;
+				bw.write("\n");
+			}
+			flagSpace = true;
+			
+			st = new StringTokenizer(br.readLine());
+			int repeat = Integer.parseInt(st.nextToken());
+			String str = st.nextToken();
+			for(int j = 0; j < str.length(); j++) {
+				for(int k = 0; k < repeat; k++) {
+					bw.write(str.charAt(j));
+				}
 			}
 		}
-		
-		bw.write(Integer.toString(leftOver.size()));
 		
         bw.close();
 	}
