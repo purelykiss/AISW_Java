@@ -3,6 +3,7 @@ package kr.ac.kopo.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -28,17 +29,22 @@ public class PrnEmpSalary {
 	}
 	
 	public static void main(String[] args) {
+		Timer timer = new Timer();
+		timer.startTimer();
 		PrnEmpSalary pes = new PrnEmpSalary();
 		pes.getSQL();
 		
 		boolean flagExit = false;
 		while(!flagExit) {
-			pes.getInput();
+			pes.getInput(10000);
 			if(!(pes.inputSalary > 0)) {
 				
 			}else {
 				pes.calculateOutput();
+				timer.endTimer();
 			}
+			flagExit = true;	//시간제기
+			timer.startTimer();
 		}
 		
 		pes.onFinish();
@@ -78,6 +84,11 @@ public class PrnEmpSalary {
 	public void getInput() {
 		System.out.print("급여를 입력하시요 : ");
 		inputSalary = Integer.parseInt(sc.nextLine());
+	}
+	
+	public void getInput(int salary) {//시간제기용
+		System.out.print("급여를 입력하시요 : ");
+		inputSalary = salary;
 	}
 	
 	public void calculateOutput() {
