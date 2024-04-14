@@ -16,7 +16,31 @@ public class BoardDAO {
 		list.add(board);
 	}
 	
+	public int size() {
+		return list.size();
+	}
+	
 	public List<BoardVO> selectAll() {
 		return list;
+	}
+	
+	public boolean remove(int no) {
+		boolean flagExist = false;
+		for(BoardVO item : list) {
+			if(item.getNo() == no) {
+				flagExist = list.remove(item);
+				break;
+			}
+		}
+		return flagExist;
+	}
+	
+	public BoardVO getByNo(int no) {
+		for(BoardVO item : list) {
+			if(item.getNo() == no) {
+				return item;
+			}
+		}
+		return null;
 	}
 }

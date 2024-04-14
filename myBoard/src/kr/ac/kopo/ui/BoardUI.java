@@ -2,6 +2,9 @@ package kr.ac.kopo.ui;
 
 import java.util.Scanner;
 
+import kr.ac.kopo.ui.base.BaseUI;
+import kr.ac.kopo.ui.base.IBoardUI;
+
 public class BoardUI extends BaseUI{	//ui는 입출력만 담당
 	
 	public void execute() throws Exception{

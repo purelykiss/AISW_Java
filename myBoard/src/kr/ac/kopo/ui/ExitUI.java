@@ -1,5 +1,7 @@
 package kr.ac.kopo.ui;
 
+import kr.ac.kopo.ui.base.BaseUI;
+
 public class ExitUI extends BaseUI{
 
 	@Override
