@@ -13,12 +13,13 @@ public class Main{
 		String str = br.readLine();
 		int time = 0;
 		
+		/*
 		for(int i = 0; i < str.length(); i++) {
 			time += 3
 			for(char ch : "CFILOSVZ"){
 				str.charAt(i)
 			}
-		}
+		}*/
 		
 		for(int i = 0; i < str.length(); i++) {
 			switch(str.charAt(i)) {
