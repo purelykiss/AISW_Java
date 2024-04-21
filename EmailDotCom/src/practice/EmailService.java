@@ -1,12 +1,23 @@
 package practice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kr.ac.kopo.ui.base.UIManager;
 
 public class EmailService {
 	public static EmailService instance;
+
+	private AccountDAO accountDAO;
+	private SessionDAO sessionDAO;
+	private EmailDAO emailDAO;
 	
 	private EmailService() {
 		instance = new EmailService();
+		
+		accountDAO = new AccountDAO();
+		sessionDAO = new SessionDAO();
+		emailDAO = new EmailDAO();
 	}
 	
 	public static EmailService instanciate() throws Exception {
@@ -28,4 +39,67 @@ public class EmailService {
 		}
 	}
 
+	public SessionVO TryLogin(AccountVO account) {
+		SessionVO session = null;
+		session = getSession(account, session);	//session값 갱신 시도
+		
+		return session;	//로그인 실패시 session = null
+	}
+	
+	public void LoginOut(AccountVO account, SessionVO session) {
+		giveUpSession(account, session);
+	}
+	
+	public void CreateAccount() {
+		
+	}
+	
+	public void DeleteAccount() {
+		
+	}
+	
+	public void ChangeAccountAuthority() {
+		
+	}
+	
+	public void BlockAccount() {
+		
+	}
+	
+	
+	public void ViewEmailList() {
+		
+	}
+	
+	public void ViewEmail() {
+		
+	}
+	
+	public void SendEmail() {
+		
+	}
+	
+	public void MoveEmailTo() {
+		
+	}
+	
+	public void RemoveEmail() {
+		
+	}
+	
+	
+	public SessionVO getSession(AccountVO account, SessionVO session) {	//보안상의 이유로 나중에 변경될 부분
+		session = null;
+		sessionDAO.tryGetSession(account, session);	//account를 확인하고 session만 바뀜
+		
+		return session;
+	}
+	
+	public void refreshSession() {
+		
+	}
+	
+	public void giveUpSession(AccountVO account, SessionVO session) {	//보안상의 이유로 나중에 변경될 부분
+		sessionDAO.tryGiveUpSession(account, session);
+	}
 }
