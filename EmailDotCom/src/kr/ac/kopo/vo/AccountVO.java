@@ -1,8 +1,8 @@
-package practice;
+package kr.ac.kopo.vo;
 
 public class AccountVO {
-	String id;
-	String password;
+	private String id;
+	private String password;
 	
 	public AccountVO() {
 		id = "";

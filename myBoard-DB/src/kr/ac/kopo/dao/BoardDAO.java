@@ -34,6 +34,7 @@ public class BoardDAO {
 			String writer = board.getWriter();
 			pstmt.setString(1, title);
 			pstmt.setString(2, writer);
+			System.out.println(sql.toString());	//디버그
 			pstmt.executeUpdate();
 		}catch(Exception e) {
 			e.printStackTrace();

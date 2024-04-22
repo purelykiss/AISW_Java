@@ -1,5 +1,5 @@
-package practice;
-import kr.ac.kopo.ctrl.base.CtrlManager;
+package kr.ac.kopo.main;
+import kr.ac.kopo.singleton.ManagerFactory;
 import kr.ac.kopo.ui.base.UIManager;
 
 public class LoopField {
@@ -9,7 +9,7 @@ public class LoopField {
 		try {
 			ManagerFactory.activate();
 			while(true) {
-				CtrlManager.instanciate().activate();
+				UIManager.getInstance().activate();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
