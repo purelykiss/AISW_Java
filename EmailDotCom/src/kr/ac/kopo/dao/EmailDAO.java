@@ -1,4 +1,4 @@
-package practice;
+package kr.ac.kopo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.ac.kopo.util.ConnectionFactory;
+import kr.ac.kopo.vo.AccountIDVO;
+import kr.ac.kopo.vo.EmailVO;
 
 public class EmailDAO {
 	public EmailDAO() {

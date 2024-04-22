@@ -1,9 +1,15 @@
-package practice;
+package kr.ac.kopo.singleton;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.ac.kopo.dao.AccountDAO;
+import kr.ac.kopo.dao.EmailDAO;
+import kr.ac.kopo.dao.SessionDAO;
 import kr.ac.kopo.ui.base.UIManager;
+import kr.ac.kopo.vo.AccountVO;
+import kr.ac.kopo.vo.ProfileVO;
+import kr.ac.kopo.vo.SessionVO;
 
 public class EmailService {
 	public static EmailService instance;
@@ -13,8 +19,6 @@ public class EmailService {
 	private EmailDAO emailDAO;
 	
 	private EmailService() {
-		instance = new EmailService();
-		
 		accountDAO = new AccountDAO();
 		sessionDAO = new SessionDAO();
 		emailDAO = new EmailDAO();
@@ -31,23 +35,28 @@ public class EmailService {
 		return instance;
 	}
 	
-	public static EmailService getInstance() throws Exception{
+	public static EmailService getInstance(){
 		if(instance == null) {
-			throw new Exception("아직 EmailService 싱글톤이 만들어지지 않았습니다.");
+			System.out.println("아직 EmailService 싱글톤이 만들어지지 않았습니다.");
+			return null;
 		}else {
 			return instance;
 		}
 	}
 
-	public SessionVO tryLogin(AccountVO account) {
-		SessionVO session = null;
-		session = getSession(account, session);	//session값 갱신 시도
+	public boolean login(AccountVO account) {
+		SessionVO session = getSession(account);	//session값 갱신 시도
+		if(session != null) {
+			CredentialManager.getInstance().login(account, session);
+			return true;
+		}
 		
-		return session;	//로그인 실패시 session = null
+		return false;	//로그인 실패시 session = null
 	}
 	
-	public void loginOut(AccountVO account, SessionVO session) {
+	public void logOut(AccountVO account, SessionVO session) {
 		giveUpSession(account, session);
+		CredentialManager.getInstance().logout(account, session);
 	}
 	
 	public void createAccount(ProfileVO profile) {
@@ -68,7 +77,7 @@ public class EmailService {
 	
 	
 	public void viewEmailList() {
-		emailDAO;//
+		
 	}
 	
 	public void viewEmail() {
@@ -88,11 +97,8 @@ public class EmailService {
 	}
 	
 	
-	public SessionVO getSession(AccountVO account, SessionVO session) {
-		session = null;
-		sessionDAO.tryGetSession(account, session);	//account를 확인하고 session만 바뀜
-		
-		return session;
+	public SessionVO getSession(AccountVO account) {
+		return sessionDAO.tryGetSession(account);
 	}
 	
 	public boolean refreshSession(AccountVO account, SessionVO session) {

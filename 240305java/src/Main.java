@@ -19,24 +19,19 @@ public class Main{
 		String str = br.readLine();
 		
 		StringBuilder sql = new StringBuilder();
+
+		sql.append("INSERT INTO EMAILDOTCOM_SESSION (SESSION_, ID) "
+				+ "VALUES(?, ?)");
 		
-		Connection conn = null;
-		
-		
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String user = "hr";
-		String password = "hr";
-		
-		
-		sql.append("SELECT * ");
-		sql.append("FROM " + str);
-		
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection(url, user, password);
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
-			ResultSet rs =  pstmt.getResultSet();
-		} catch (Exception e) {
+		){
+			pstmt.setInt(1, 134566666);
+			pstmt.setString(2, "EE");
+			System.out.println(sql.toString());	//디버그
+			pstmt.executeUpdate();
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		

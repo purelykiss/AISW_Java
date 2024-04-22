@@ -1,4 +1,4 @@
-package practice;
+package kr.ac.kopo.vo;
 
 public class AccountIDVO {
 	private String id;

@@ -1,15 +1,19 @@
-package practice;
+package kr.ac.kopo.singleton;
+
+import kr.ac.kopo.vo.AccountVO;
+import kr.ac.kopo.vo.SessionVO;
 
 public class CredentialManager {
 	public static CredentialManager instance;
 	
 	private AccountVO curAccount;
 	private SessionVO curSession;
+	boolean isLogin;
 	
 	private CredentialManager() {
-		instance = new CredentialManager();
 		curAccount = null;
 		curSession = null;
+		isLogin = false;
 	}
 	
 	public static CredentialManager instanciate() throws Exception {
@@ -23,13 +27,28 @@ public class CredentialManager {
 		return instance;
 	}
 	
-	public static CredentialManager getInstance() throws Exception{
+	public static CredentialManager getInstance(){
 		if(instance == null) {
-			throw new Exception("아직 CredentialManager 싱글톤이 만들어지지 않았습니다.");
+			System.out.println("아직 CredentialManager 싱글톤이 만들어지지 않았습니다.");
+			return null;
 		}else {
 			return instance;
 		}
 	}
 	
+	public void login(AccountVO account, SessionVO session) {
+		curAccount = account;
+		curSession = session;
+		isLogin = true;
+	}
 	
+	public void logout(AccountVO account, SessionVO session) {
+		curAccount = null;
+		curSession = null;
+		isLogin = false;
+	}
+	
+	public boolean getIsLogin() {
+		return isLogin;
+	}
 }

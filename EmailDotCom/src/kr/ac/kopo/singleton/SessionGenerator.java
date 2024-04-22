@@ -1,7 +1,14 @@
-package practice;
+package kr.ac.kopo.singleton;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.util.Random;
+
+import kr.ac.kopo.util.ConnectionFactory;
+import kr.ac.kopo.vo.AccountVO;
+import kr.ac.kopo.vo.SessionVO;
 
 public class SessionGenerator {	//원래 로그인하는 서버에서 시즌을 만들어야 하지만 따로 서버까지 만들기 힘드므로 대신 만듦
 	public static SessionGenerator instance;
@@ -9,7 +16,6 @@ public class SessionGenerator {	//원래 로그인하는 서버에서 시즌을 
 	Date date;
 	
 	private SessionGenerator() {
-		instance = new SessionGenerator();
 		rd = new Random();
 		date = new Date();
 	}
@@ -25,21 +31,23 @@ public class SessionGenerator {	//원래 로그인하는 서버에서 시즌을 
 		return instance;
 	}
 	
-	public static SessionGenerator getInstance() throws Exception{
+	public static SessionGenerator getInstance(){
 		if(instance == null) {
-			throw new Exception("아직 SessionGenerator 싱글톤이 만들어지지 않았습니다.");
+			System.out.println("아직 SessionGenerator 싱글톤이 만들어지지 않았습니다.");
+			return null;
 		}else {
 			return instance;
 		}
 	}
 	
 	
-	public void clientRequestGetSession(AccountVO account, SessionVO session) {
-		if(checkAccountValid(account)) {
-			session = generateSession(account);
+	public SessionVO clientRequestGetSession(AccountVO account) {
+		if(checkAccountValid(account)) {	//추가로 이미 시즌이 있는지 검사해야함
+			SessionVO session = generateSession(account);
 			setSessionForServer(session);
+			return session;
 		}else {
-			session = null;
+			return null;
 		}
 	}
 	
@@ -69,6 +77,22 @@ public class SessionGenerator {	//원래 로그인하는 서버에서 시즌을 
 	
 	public void setSessionForServer(SessionVO session) {
 		//DB에 해당 시즌 정보 추가
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("INSERT INTO EMAILDOTCOM_SESSION (SESSION_, ID) "
+				+ "VALUES(?, ?)");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.setLong(1, session.getSession());
+			pstmt.setString(2, session.getID());
+			System.out.println(sql.toString());	//디버그
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void removeSessionFromServer(SessionVO session) {
@@ -81,8 +105,34 @@ public class SessionGenerator {	//원래 로그인하는 서버에서 시즌을 
 	
 	
 	public boolean checkAccountValid(AccountVO account) {
-		//DB에서 해당 계정 정보가 맞는지 검사
-		return false;
+		boolean result = false;
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ID, PASSWD "
+				+ "FROM EMAILDOTCOM_PROFILE "
+				+ "WHERE ID = ? "
+				+ "  AND PASSWD = ? ");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.setString(1, account.getID());
+			pstmt.setString(2, account.getPassword());
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String id = rs.getString("ID");
+				String passwd = rs.getString("PASSWD");
+				
+				System.out.println(id + " " + passwd);
+				if(id.equals(account.getID()) && passwd.equals(account.getPassword()))
+					result = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
+		return result;
 	}
 	
 	public boolean checkSessionValid(SessionVO session) {

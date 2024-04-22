@@ -1,4 +1,8 @@
-package practice;
+package kr.ac.kopo.dao;
+
+import kr.ac.kopo.singleton.SessionGenerator;
+import kr.ac.kopo.vo.AccountVO;
+import kr.ac.kopo.vo.SessionVO;
 
 public class SessionDAO {
 	
@@ -7,16 +11,14 @@ public class SessionDAO {
 		
 	}
 	
-	public boolean tryGetSession(AccountVO account, SessionVO session){//view, 
+	public SessionVO tryGetSession(AccountVO account){//view,
 		try {
-			SessionGenerator.getInstance().clientRequestGetSession(account, session);
+			return SessionGenerator.getInstance().clientRequestGetSession(account);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(session != null)
-			return true;
-		else
-			return false;
+
+		return null;
 	}
 	
 	public boolean tryGiveUpSession(AccountVO account, SessionVO session) {
