@@ -39,67 +39,67 @@ public class EmailService {
 		}
 	}
 
-	public SessionVO TryLogin(AccountVO account) {
+	public SessionVO tryLogin(AccountVO account) {
 		SessionVO session = null;
 		session = getSession(account, session);	//session값 갱신 시도
 		
 		return session;	//로그인 실패시 session = null
 	}
 	
-	public void LoginOut(AccountVO account, SessionVO session) {
+	public void loginOut(AccountVO account, SessionVO session) {
 		giveUpSession(account, session);
 	}
 	
-	public void CreateAccount() {
+	public void createAccount(ProfileVO profile) {
+		accountDAO.createAccount(profile);
+	}
+	
+	public void deleteAccount(AccountVO account) {
+		accountDAO.deleteAccount(account);
+	}
+	
+	/*public void changeAccountAuthority(AccountVO account) {
+		
+	}*/
+	
+	/*public void blockAccount(AccountVO myAccount, AccountIDVO targetID) {
+		
+	}*/
+	
+	
+	public void viewEmailList() {
+		emailDAO;//
+	}
+	
+	public void viewEmail() {
 		
 	}
 	
-	public void DeleteAccount() {
+	public void sendEmail() {
 		
 	}
 	
-	public void ChangeAccountAuthority() {
+	public void moveEmailTo() {
 		
 	}
 	
-	public void BlockAccount() {
-		
-	}
-	
-	
-	public void ViewEmailList() {
-		
-	}
-	
-	public void ViewEmail() {
-		
-	}
-	
-	public void SendEmail() {
-		
-	}
-	
-	public void MoveEmailTo() {
-		
-	}
-	
-	public void RemoveEmail() {
+	public void removeEmail() {
 		
 	}
 	
 	
-	public SessionVO getSession(AccountVO account, SessionVO session) {	//보안상의 이유로 나중에 변경될 부분
+	public SessionVO getSession(AccountVO account, SessionVO session) {
 		session = null;
 		sessionDAO.tryGetSession(account, session);	//account를 확인하고 session만 바뀜
 		
 		return session;
 	}
 	
-	public void refreshSession() {
-		
+	public boolean refreshSession(AccountVO account, SessionVO session) {
+		return sessionDAO.tryRefreshSession(account, session);
 	}
 	
-	public void giveUpSession(AccountVO account, SessionVO session) {	//보안상의 이유로 나중에 변경될 부분
-		sessionDAO.tryGiveUpSession(account, session);
+	public boolean giveUpSession(AccountVO account, SessionVO session) {
+		return sessionDAO.tryGiveUpSession(account, session);
 	}
 }

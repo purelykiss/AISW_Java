@@ -1,8 +1,8 @@
 package practice;
 
 public class AccountVO {
-	String id;
-	String password;
+	private String id;
+	private String password;
 	
 	public AccountVO() {
 		id = "";

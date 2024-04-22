@@ -7,5 +7,6 @@ public class ManagerFactory {
 		CtrlManager.instanciate();
 		UIManager.instanciate();
 		EmailService.instanciate();
+		SessionGenerator.instanciate();
 	}
 }

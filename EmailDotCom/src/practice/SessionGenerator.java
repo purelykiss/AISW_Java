@@ -3,7 +3,7 @@ package practice;
 import java.util.Date;
 import java.util.Random;
 
-public class SessionGenerator {
+public class SessionGenerator {	//원래 로그인하는 서버에서 시즌을 만들어야 하지만 따로 서버까지 만들기 힘드므로 대신 만듦
 	public static SessionGenerator instance;
 	Random rd;
 	Date date;
@@ -43,16 +43,26 @@ public class SessionGenerator {
 		}
 	}
 	
-	public void clientRequestRemoveSession(AccountVO account, SessionVO session) {
+	public boolean clientRequestRemoveSession(AccountVO account, SessionVO session) {
 		if(checkAccountValid(account)) {
 			removeSessionFromServer(session);	//순서 중요
 			session = null;
+			return true;
 		}
+		return false;
 	}
 	
 	public void clientRequestRefreshSession(AccountVO account, SessionVO session) {
-		if(checkAccountValid(account)) {
-			refreshSessionForServer(session);
+		boolean flag = true;
+		if(!checkAccountValid(account)) {
+			flag = false;
+		}
+		if(!checkSessionValid(session)) {
+			flag = false;
+		}
+		refreshSessionForServer(session);
+		if(!flag) {
+			session = null;
 		}
 	}
 	
@@ -72,6 +82,11 @@ public class SessionGenerator {
 	
 	public boolean checkAccountValid(AccountVO account) {
 		//DB에서 해당 계정 정보가 맞는지 검사
+		return false;
+	}
+	
+	public boolean checkSessionValid(SessionVO session) {
+		//DB에서 해당 시즌 정보가 맞는지 검사
 		return false;
 	}
 	
@@ -96,6 +111,6 @@ public class SessionGenerator {
 		seed *= tmp;
 		
 		rd.setSeed(seed);
-		return new SessionVO(account, rd.nextLong(100000000));
+		return new SessionVO(account.getID(), rd.nextLong(100000000));
 	}
 }

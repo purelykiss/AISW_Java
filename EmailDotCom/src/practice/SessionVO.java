@@ -1,12 +1,12 @@
 package practice;
 
 public class SessionVO {
-	AccountVO account;
+	String id;
 	long session;
 	
-	public SessionVO(AccountVO account, long session) {
+	public SessionVO(String id, long session) {
 		super();
-		this.account = account;
+		this.id = id;
 		this.session = session;
 	}
 	
@@ -18,25 +18,13 @@ public class SessionVO {
 	public SessionVO() {
 		super();
 	}
-
-	public AccountVO getAccount() {
-		return account;
-	}
 	
 	public String getID() {
-		return account.getID();
-	}
-
-	public void setAccount(AccountVO account) {
-		this.account = account;
+		return id;
 	}
 	
 	public void setID(String id) {
-		this.account.setID(id);
-	}
-	
-	public void setPassword(String password) {
-		this.account.setPassword(password);
+		this.id = id;
 	}
 
 	public long getSession() {
