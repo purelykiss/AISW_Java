@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import kr.ac.kopo.ui.FindUI;
 import kr.ac.kopo.ui.LobbyUI;
 import kr.ac.kopo.ui.LoginUI;
+import kr.ac.kopo.ui.RegisterUI;
 
 public class UIManager {
 	public static UIManager instance;
@@ -18,7 +20,8 @@ public class UIManager {
 		uiList = new ArrayList();
 		uiList.add(new LobbyUI());
 		uiList.add(new LoginUI());
-		
+		uiList.add(new FindUI());
+		uiList.add(new RegisterUI());
 		curUI = uiList.get(0);
 	}
 	

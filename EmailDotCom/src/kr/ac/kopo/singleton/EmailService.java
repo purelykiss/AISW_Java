@@ -3,10 +3,11 @@ package kr.ac.kopo.singleton;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.ac.kopo.dao.AccountDAO;
+import kr.ac.kopo.dao.ProfileDAO;
 import kr.ac.kopo.dao.EmailDAO;
 import kr.ac.kopo.dao.SessionDAO;
 import kr.ac.kopo.ui.base.UIManager;
+import kr.ac.kopo.vo.AccountIDVO;
 import kr.ac.kopo.vo.AccountVO;
 import kr.ac.kopo.vo.ProfileVO;
 import kr.ac.kopo.vo.SessionVO;
@@ -14,12 +15,12 @@ import kr.ac.kopo.vo.SessionVO;
 public class EmailService {
 	public static EmailService instance;
 
-	private AccountDAO accountDAO;
+	private ProfileDAO profileDAO;
 	private SessionDAO sessionDAO;
 	private EmailDAO emailDAO;
 	
 	private EmailService() {
-		accountDAO = new AccountDAO();
+		profileDAO = new ProfileDAO();
 		sessionDAO = new SessionDAO();
 		emailDAO = new EmailDAO();
 	}
@@ -59,14 +60,30 @@ public class EmailService {
 		CredentialManager.getInstance().logout(account, session);
 	}
 	
-	public void createAccount(ProfileVO profile) {
-		accountDAO.createAccount(profile);
+	public boolean createProfile(ProfileVO profile) {
+		return profileDAO.createProfile(profile);
 	}
 	
-	public void deleteAccount(AccountVO account) {
-		accountDAO.deleteAccount(account);
+	public void deleteProfile(AccountVO account) {
+		profileDAO.deleteProfile(account);
 	}
 	
+	public List<AccountIDVO> getAccountIDList(ProfileVO profile) {
+		return profileDAO.getAccountIDList(profile);
+	}
+	
+	public AccountVO getAccount(ProfileVO profile) {
+		return profileDAO.getAccount(profile);
+	}
+	
+	public boolean IsAccountIDExist(AccountIDVO id) {
+		return profileDAO.IsAccountExist(id);
+	}
+	
+	public boolean IsEmailExist(ProfileVO profile) {
+		return profileDAO.IsEmailExist(profile);
+	}
+
 	/*public void changeAccountAuthority(AccountVO account) {
 		
 	}*/

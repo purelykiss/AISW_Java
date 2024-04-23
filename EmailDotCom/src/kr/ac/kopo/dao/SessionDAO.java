@@ -11,7 +11,7 @@ public class SessionDAO {
 		
 	}
 	
-	public SessionVO tryGetSession(AccountVO account){//view,
+	public SessionVO tryGetSession(AccountVO account){
 		try {
 			return SessionGenerator.getInstance().clientRequestGetSession(account);
 		} catch (Exception e) {
