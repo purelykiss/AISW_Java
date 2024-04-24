@@ -2,8 +2,8 @@ package kr.ac.kopo.ui;
 
 import kr.ac.kopo.singleton.EmailService;
 import kr.ac.kopo.singleton.InputManager;
+import kr.ac.kopo.singleton.UIManager;
 import kr.ac.kopo.ui.base.BaseUI;
-import kr.ac.kopo.ui.base.UIManager;
 import kr.ac.kopo.vo.AccountIDVO;
 import kr.ac.kopo.vo.ProfileVO;
 
@@ -93,6 +93,6 @@ public class RegisterUI extends BaseUI{
 		}
 		System.out.println("로비로 돌아갑니다.");
 		
-		UIManager.getInstance().ChangeUI(0);
+		UIManager.getInstance().changeUI(0);
 	}
 }

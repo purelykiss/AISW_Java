@@ -15,28 +15,39 @@ public class EmailDAO {
 		
 	}//바뀔것: Email에서 번호만 있는 것이 필요
 	
-	public List<EmailVO> viewEmailList(AccountIDVO id, int many, int page){	//many가 -1일 경우 전부다, page는 1부터
-		List<EmailVO> list = new ArrayList();
+	public List<EmailVO> getEmailList(int emailPerPage, int page){
+		List<EmailVO> emailList = new ArrayList();
 		
 		StringBuilder sql = new StringBuilder();
-		String str = id.getID();
-		sql.append("SELECT * ");
-		sql.append("FROM " + str + "_EMAIL");
+		sql.append("SELECT CODE, "
+				+ "       TITLE, "
+				+ "       SENDER_NAME,"
+				+ "		  SENDER_ID, "
+				+ "       TO_CHAR(SNT_DATE, 'YYYY/MM/DD') AS DATE "
+				+ "FROM EMAILDOTCOM_EE_SENT_MAIL "
+				+ "WHERE ROWNUM BETWEEN ? AND ? ");
 		
 		try(
-			Connection conn =  new ConnectionFactory().getConnection();
+			Connection conn = new ConnectionFactory().getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 		){
-			pstmt.executeQuery();
-			ResultSet rs =  pstmt.getResultSet();
+			pstmt.setInt(1, ((page-1)*emailPerPage + 1 >0) ? (page-1)*emailPerPage + 1 : 1 );
+			pstmt.setInt(2, (page*emailPerPage >0) ? page*emailPerPage : 1 );
+			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				rs.getString(1);
+				EmailVO item = new EmailVO();
+				item.setCode(rs.getInt(1));
+				item.setTitle(rs.getString(2));
+				item.setSenderID(rs.getString(4));
+				item.setSenderName(rs.getString(3));
+				item.setDate(rs.getString(5));
+				emailList.add(new EmailVO());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return emailList;
 	}
 	
 	public void viewEmail(/*어느 테이블, 몇번 이메일?*/) {

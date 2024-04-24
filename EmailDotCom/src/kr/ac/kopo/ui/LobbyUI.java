@@ -2,8 +2,8 @@ package kr.ac.kopo.ui;
 
 import kr.ac.kopo.singleton.CredentialManager;
 import kr.ac.kopo.singleton.InputManager;
+import kr.ac.kopo.singleton.UIManager;
 import kr.ac.kopo.ui.base.BaseUI;
-import kr.ac.kopo.ui.base.UIManager;
 
 public class LobbyUI extends BaseUI{
 	private boolean flagLogo;
@@ -52,7 +52,7 @@ public class LobbyUI extends BaseUI{
 			flag = true;
 			input = InputManager.getInstance().nextInt();
 			if(input <= 3) {
-				UIManager.getInstance().ChangeUI(input);
+				UIManager.getInstance().changeUI(input);
 			}else {
 				System.out.println("잘못된 번호입니다. 다시 입력하십시오.");
 			}
@@ -73,7 +73,7 @@ public class LobbyUI extends BaseUI{
 			flag = true;
 			input = InputManager.getInstance().nextInt();
 			if(input <= 3) {
-				UIManager.getInstance().ChangeUI(input);
+				UIManager.getInstance().changeUI(input);
 			}else {
 				System.out.println("잘못된 번호입니다. 다시 입력하십시오.");
 			}

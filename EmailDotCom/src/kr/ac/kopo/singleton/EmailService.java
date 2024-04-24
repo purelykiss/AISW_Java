@@ -6,9 +6,9 @@ import java.util.List;
 import kr.ac.kopo.dao.ProfileDAO;
 import kr.ac.kopo.dao.EmailDAO;
 import kr.ac.kopo.dao.SessionDAO;
-import kr.ac.kopo.ui.base.UIManager;
 import kr.ac.kopo.vo.AccountIDVO;
 import kr.ac.kopo.vo.AccountVO;
+import kr.ac.kopo.vo.EmailVO;
 import kr.ac.kopo.vo.ProfileVO;
 import kr.ac.kopo.vo.SessionVO;
 
@@ -93,8 +93,8 @@ public class EmailService {
 	}*/
 	
 	
-	public void viewEmailList() {
-		
+	public List<EmailVO> getEmailList(int emailPerPage, int page) {
+		return emailDAO.getEmailList(emailPerPage, page);
 	}
 	
 	public void viewEmail() {

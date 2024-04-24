@@ -1,26 +1,23 @@
 package kr.ac.kopo.ui;
 
-import kr.ac.kopo.singleton.InputManager;
-import kr.ac.kopo.ui.base.BaseUI;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ReceivedUI  extends BaseUI{
+import kr.ac.kopo.singleton.InputManager;
+import kr.ac.kopo.singleton.UIManager;
+import kr.ac.kopo.ui.base.BaseUI;
+import kr.ac.kopo.ui.mail.BaseMailUI;
+import kr.ac.kopo.ui.mail.IMailState;
+import kr.ac.kopo.ui.mail.IMailUI;
+
+public class ReceivedUI  extends BaseMailUI{
+	List<IMailState> stateList;
+	IMailState curState;
 	
 	public ReceivedUI() {
 		super("received", "받은 메일함");
-	}
-
-	@Override
-	public void execute() {
-		int choice = 0;
-		System.out.println("받은 메일함)");
-		System.out.println("1. 전체보기");
-		System.out.println("2. 고유번호로 찾기");
-		System.out.println("3. 검색하기");
-		System.out.println();
-		System.out.println();
-		System.out.print("원하는 동작을 선택하십시오:");
-		choice = InputManager.getInstance().nextInt();
-		
-		//switch()
+		stateList = new ArrayList<IMailState>();	//List에 추가를 하면서 각 State들을 선언함! new IUIState(this) 형식으로 선언!
+		//stateList.add();
+		initialize();
 	}
 }
