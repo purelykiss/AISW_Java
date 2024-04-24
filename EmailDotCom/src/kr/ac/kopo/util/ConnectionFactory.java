@@ -18,6 +18,7 @@ public class ConnectionFactory {
 		String user = "hr";
 		String password = "hr";
 		conn = DriverManager.getConnection(url, user, password);
+		conn.setAutoCommit(true);
 		
 		return conn;
 	}
