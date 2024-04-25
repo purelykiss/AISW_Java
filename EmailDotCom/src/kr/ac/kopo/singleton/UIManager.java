@@ -1,4 +1,4 @@
-package kr.ac.kopo.ui.base;
+package kr.ac.kopo.singleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,9 @@ import java.util.Scanner;
 import kr.ac.kopo.ui.FindUI;
 import kr.ac.kopo.ui.LobbyUI;
 import kr.ac.kopo.ui.LoginUI;
+import kr.ac.kopo.ui.ReceivedUI;
 import kr.ac.kopo.ui.RegisterUI;
+import kr.ac.kopo.ui.base.IUI;
 
 public class UIManager {
 	public static UIManager instance;
@@ -22,6 +24,7 @@ public class UIManager {
 		uiList.add(new LoginUI());
 		uiList.add(new FindUI());
 		uiList.add(new RegisterUI());
+		uiList.add(new ReceivedUI());
 		curUI = uiList.get(0);
 	}
 	
@@ -49,7 +52,7 @@ public class UIManager {
 		curUI.execute();
 	}
 	
-	public void ChangeUI(String id) {
+	public void changeUI(String id) {
 		for(IUI item : uiList) {
 			if(id.equals(item.getID())) {
 				curUI = item;
@@ -57,7 +60,7 @@ public class UIManager {
 		}
 	}
 	
-	public void ChangeUI(int index) {
+	public void changeUI(int index) {
 		if(uiList.size() > index)
 			curUI = uiList.get(index);
 	}
@@ -78,4 +81,7 @@ public class UIManager {
 			return null;
 	}
 	
+	public int getUIListSize() {
+		return uiList.size();
+	}
 }

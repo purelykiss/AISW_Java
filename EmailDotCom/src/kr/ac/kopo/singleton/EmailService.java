@@ -6,9 +6,9 @@ import java.util.List;
 import kr.ac.kopo.dao.ProfileDAO;
 import kr.ac.kopo.dao.EmailDAO;
 import kr.ac.kopo.dao.SessionDAO;
-import kr.ac.kopo.ui.base.UIManager;
 import kr.ac.kopo.vo.AccountIDVO;
 import kr.ac.kopo.vo.AccountVO;
+import kr.ac.kopo.vo.EmailVO;
 import kr.ac.kopo.vo.ProfileVO;
 import kr.ac.kopo.vo.SessionVO;
 
@@ -93,24 +93,25 @@ public class EmailService {
 	}*/
 	
 	
-	public void viewEmailList() {
-		
+	public List<EmailVO> getEmailList(int state, int emailPerPage, int page) {//1.받은 편지  2. 보낸 편지  3. 휴지통
+		return emailDAO.getEmailList(state, emailPerPage, page);
 	}
 	
-	public void viewEmail() {
-		
+	public EmailVO getEmail(int state, int code) {//1.받은 편지  2. 보낸 편지  3. 휴지통
+		return emailDAO.getEmail(state, code);
 	}
 	
 	public void sendEmail() {
 		
 	}
 	
-	public void moveEmailTo() {
-		
+	public void moveMailTo(int stateFrom, int stateTo, int code) {
+		if(emailDAO.copyMailTo(stateFrom, stateTo, code))
+			emailDAO.removeEmail(stateFrom, code);
 	}
 	
-	public void removeEmail() {
-		
+	public void removeEmail(int state, int code) {
+		emailDAO.removeEmail(state, code);
 	}
 	
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.ac.kopo.singleton.EmailService;
 import kr.ac.kopo.singleton.InputManager;
+import kr.ac.kopo.singleton.UIManager;
 import kr.ac.kopo.ui.base.BaseUI;
 import kr.ac.kopo.vo.AccountIDVO;
 import kr.ac.kopo.vo.AccountVO;
@@ -23,6 +24,7 @@ public class FindUI extends BaseUI{
 		if(flagPasswd) {
 			findPasswd();
 		}
+		UIManager.getInstance().changeUI(0);
 	}
 	
 	private void findID() {
