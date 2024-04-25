@@ -21,11 +21,6 @@ public abstract class BaseMailUI extends BaseUI implements IMailUI{
 	public void initialize() {
 		changeState(0);
 	}
-
-	@Override
-	public void execute() {
-		curState.execute();
-	}
 	
 	@Override
 	public void changeUI(String id) {//아직 옵저버 패턴을 모르니 IMailState에선 이것으로 UI를 바꾼다.

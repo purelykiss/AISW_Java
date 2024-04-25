@@ -8,6 +8,8 @@ public abstract class BaseMailState implements IMailState{
 	
 	public BaseMailState(IMailUI parent, String id, String description){
 		this.parent = parent;
+		this.id = id;
+		this.description = description;
 	}
 
 	@Override

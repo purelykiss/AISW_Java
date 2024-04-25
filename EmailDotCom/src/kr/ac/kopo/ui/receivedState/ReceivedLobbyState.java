@@ -27,21 +27,14 @@ public class ReceivedLobbyState extends BaseMailState {
 			choice = InputManager.getInstance().nextInt();
 			
 			flagValid = true;
-			switch(choice) {
-			case 1:
-				//
-				break;
-			case 2:
-				//
-				break;
-			case 3:
-				//
-				break;
-			default:
+			
+			if(choice <= 3) {
+				parent.changeState(choice);
+			}else {
 				System.out.println("잘못된 번호입니다. 다시 눌러주십시오.");
 				flagValid = false;
-				break;
 			}
+				
 		}
 	}
 }

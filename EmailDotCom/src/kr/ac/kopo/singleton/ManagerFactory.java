@@ -7,5 +7,6 @@ public class ManagerFactory {
 		EmailService.instanciate();
 		SessionGenerator.instanciate();
 		CredentialManager.instanciate();
+		ViewManager.instanciate();
 	}
 }

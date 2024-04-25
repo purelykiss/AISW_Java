@@ -9,15 +9,19 @@ import kr.ac.kopo.ui.base.BaseUI;
 import kr.ac.kopo.ui.mail.BaseMailUI;
 import kr.ac.kopo.ui.mail.IMailState;
 import kr.ac.kopo.ui.mail.IMailUI;
+import kr.ac.kopo.ui.receivedState.ReceivedListViewState;
+import kr.ac.kopo.ui.receivedState.ReceivedLobbyState;
 
 public class ReceivedUI  extends BaseMailUI{
-	List<IMailState> stateList;
-	IMailState curState;
-	
 	public ReceivedUI() {
 		super("received", "받은 메일함");
-		stateList = new ArrayList<IMailState>();	//List에 추가를 하면서 각 State들을 선언함! new IUIState(this) 형식으로 선언!
-		//stateList.add();
+		stateList.add(new ReceivedLobbyState(this));	//List에 추가를 하면서 각 State들을 선언함! new IUIState(this) 형식으로 선언!
+		stateList.add(new ReceivedListViewState(this));
 		initialize();
+	}
+
+	@Override
+	public void execute() {
+		curState.execute();	
 	}
 }

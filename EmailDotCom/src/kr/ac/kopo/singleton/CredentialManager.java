@@ -51,4 +51,8 @@ public class CredentialManager {
 	public boolean getIsLogin() {
 		return isLogin;
 	}
+	
+	public String getID() {
+		return curAccount.getID();
+	}
 }

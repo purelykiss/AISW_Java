@@ -7,6 +7,7 @@ import java.util.Scanner;
 import kr.ac.kopo.ui.FindUI;
 import kr.ac.kopo.ui.LobbyUI;
 import kr.ac.kopo.ui.LoginUI;
+import kr.ac.kopo.ui.ReceivedUI;
 import kr.ac.kopo.ui.RegisterUI;
 import kr.ac.kopo.ui.base.IUI;
 
@@ -23,6 +24,7 @@ public class UIManager {
 		uiList.add(new LoginUI());
 		uiList.add(new FindUI());
 		uiList.add(new RegisterUI());
+		uiList.add(new ReceivedUI());
 		curUI = uiList.get(0);
 	}
 	
@@ -79,4 +81,7 @@ public class UIManager {
 			return null;
 	}
 	
+	public int getUIListSize() {
+		return uiList.size();
+	}
 }
