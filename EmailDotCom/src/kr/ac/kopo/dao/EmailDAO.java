@@ -97,6 +97,66 @@ public class EmailDAO {
 		return email;
 	}
 	
+	public List<EmailVO> searchEmail(int mailState, int searchState, List<StringBuilder> searchPlusList, List<StringBuilder> searchMinusList){
+		String mailStateName = mailStateToName(mailState);
+		if(mailStateName == null)
+			return null;
+		
+		String searchStateName = searchStateToName(searchState);
+		if(searchStateName == null)
+			return null;
+		
+		List<EmailVO> emailList = new ArrayList();
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT CODE, "
+				+ "TITLE, "
+				+ "SENDER_NAME, "
+				+ "SENDER_ID, "
+				+ "TO_CHAR(SNT_DATE, 'YYYY/MM/DD') AS SNT_DATE "
+				+ "FROM EMAILDOTCOM_" + CredentialManager.getInstance().getID() + "_" + mailStateName
+				+ " WHERE ");
+		
+		boolean flagAnd = false;
+		for(StringBuilder item : searchPlusList) {
+			if(flagAnd) {
+				sql.append("And ");
+			}
+			flagAnd = true;
+			
+			sql.append(searchStateName + " LIKE '%" + item.toString() + "%' ");
+		}
+		
+		for(StringBuilder item : searchMinusList) {
+			if(flagAnd) {
+				sql.append("And ");
+			}
+			flagAnd = true;
+			
+			sql.append(searchStateName + " NOT LIKE '%" + item.toString() + "%' ");
+		}
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				EmailVO item = new EmailVO();
+				item.setCode(rs.getInt(1));
+				item.setTitle(rs.getString(2));
+				item.setSenderID(rs.getString(4));
+				item.setSenderName(rs.getString(3));
+				item.setDate(rs.getString(5));
+				emailList.add(item);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return emailList;
+	}
+	
 	public void addEmail(/*어느 테이블, 이메일*/) {//보낼때 서비스단에서 보낸 메일함에 하나, 받은 메일함에 하나
 		
 	}
@@ -108,9 +168,9 @@ public class EmailDAO {
 			return false;
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO EMAILDOTCOM_"+ CredentialManager.getInstance().getID() +"_" + stateFromName
+		sql.append("INSERT INTO EMAILDOTCOM_"+ CredentialManager.getInstance().getID() +"_" + stateToName
 				+ " SELECT * "
-				+ "FROM EMAILDOTCOM_"+ CredentialManager.getInstance().getID() +"_" + stateToName
+				+ "FROM EMAILDOTCOM_"+ CredentialManager.getInstance().getID() +"_" + stateFromName
 				+ " WHERE CODE = ? ");
 		
 		boolean result = false;
@@ -159,6 +219,25 @@ public class EmailDAO {
 			return new String("SENT_MAIL");
 		case 3:
 			return new String("RECYCLEBIN_MAIL");
+		default:
+			return null;
+		}
+	}
+	
+	private String searchStateToName(int state) {
+		switch(state) {
+		case 1:
+			return new String("TITLE");
+		case 2:
+			return new String("DETAIL");
+		case 3:
+			return new String("SENDER_ID");
+		case 4:
+			return new String("SENDER_NAME");
+		case 5:
+			return new String("RECEIVER_ID");
+		case 6:
+			return new String("RECEIVER_NAME");
 		default:
 			return null;
 		}
