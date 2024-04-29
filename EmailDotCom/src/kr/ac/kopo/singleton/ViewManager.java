@@ -55,17 +55,23 @@ public class ViewManager {
 			
 			switch(input) {
 			case 1:
+				if(state != 3) {
+					EmailService.getInstance().moveMailTo(state, 3, code);
+					System.out.println("해당 메일이 휴지통으로 이동했습니다.");
+					flagValid = true;
+					break;
+				}else {
+					EmailService.getInstance().removeEmail(state, code);
+					System.out.println("해당 메일이 삭제됐습니다.");
+					flagValid = true;
+					break;
+				}
 			case 2:
-				EmailService.getInstance().moveMailTo(state, 3, code);
-				System.out.println("해당 메일이 휴지통으로 이동했습니다.");
-				flagValid = true;
-				break;
-			case 3:
-				EmailService.getInstance().removeEmail(state, code);
-				System.out.println("해당 메일이 삭제됐습니다.");
 				flagValid = true;
 				break;
 			}
 		}
+		System.out.println();
+		System.out.println();
 	}
 }

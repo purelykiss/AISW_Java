@@ -1,7 +1,9 @@
 package kr.ac.kopo.singleton;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import kr.ac.kopo.dao.ProfileDAO;
 import kr.ac.kopo.dao.EmailDAO;
@@ -61,7 +63,13 @@ public class EmailService {
 	}
 	
 	public boolean createProfile(ProfileVO profile) {
-		return profileDAO.createProfile(profile);
+		boolean flag =  profileDAO.createProfile(profile);
+		if(flag) {
+			profileDAO.createSentEmail(profile);
+			profileDAO.createReceivedEmail(profile);
+			profileDAO.createRecycleEmail(profile);
+		}
+		return flag;
 	}
 	
 	public void deleteProfile(AccountVO account) {
@@ -101,8 +109,29 @@ public class EmailService {
 		return emailDAO.getEmail(state, code);
 	}
 	
-	public void sendEmail() {
-		
+	public List<EmailVO> searchEmail(int mailState, int searchState, List<StringBuilder> searchPlusList, List<StringBuilder> searchMinusList){
+		return emailDAO.searchEmail(mailState, searchState, searchPlusList, searchMinusList);
+	}
+	
+	public List<EmailVO> searchEmail(int mailState, Set<Integer> searchStates, List<StringBuilder> searchPlusList, List<StringBuilder> searchMinusList){
+		if(searchStates == null || searchStates.size() <= 0)
+			return null;
+		Set<EmailVO> searchSet = new HashSet<EmailVO>();
+		for(Integer item : searchStates) {
+			searchSet.addAll(emailDAO.searchEmail(mailState, item, searchPlusList, searchMinusList));	
+		}
+		List<EmailVO> result = new ArrayList<EmailVO>();
+		result.addAll(searchSet);
+		return result;
+	}
+	
+	public void sendEmail(EmailVO email) {
+		String receiverName = profileDAO.getAccount(new AccountIDVO(email.getReceiverID())).getName();
+		String senderName = profileDAO.getAccount(new AccountIDVO(email.getSenderID())).getName();
+		email.setReceiverName(receiverName);
+		email.setSenderName(senderName);
+		profileDAO.sendEmail(email);
+		profileDAO.addSentEmail(email);
 	}
 	
 	public void moveMailTo(int stateFrom, int stateTo, int code) {

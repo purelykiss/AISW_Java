@@ -8,7 +8,10 @@ import kr.ac.kopo.ui.FindUI;
 import kr.ac.kopo.ui.LobbyUI;
 import kr.ac.kopo.ui.LoginUI;
 import kr.ac.kopo.ui.ReceivedUI;
+import kr.ac.kopo.ui.RecycleUI;
 import kr.ac.kopo.ui.RegisterUI;
+import kr.ac.kopo.ui.SentUI;
+import kr.ac.kopo.ui.WriteUI;
 import kr.ac.kopo.ui.base.IUI;
 
 public class UIManager {
@@ -24,7 +27,10 @@ public class UIManager {
 		uiList.add(new LoginUI());
 		uiList.add(new FindUI());
 		uiList.add(new RegisterUI());
+		uiList.add(new WriteUI());
 		uiList.add(new ReceivedUI());
+		uiList.add(new SentUI());
+		uiList.add(new RecycleUI());
 		curUI = uiList.get(0);
 	}
 	

@@ -1,4 +1,4 @@
-package kr.ac.kopo.ui.receivedState;
+package kr.ac.kopo.ui.recycleState;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import kr.ac.kopo.ui.mail.BaseMailState;
 import kr.ac.kopo.ui.mail.IMailUI;
 import kr.ac.kopo.vo.EmailVO;
 
-public class ReceivedListViewState extends BaseMailState{
+public class RecycleListViewState extends BaseMailState{
 	int emailPerPage;
 	int curPage;
 	List<EmailVO> emailList;
 	
-	public ReceivedListViewState(IMailUI parent) {
+	public RecycleListViewState(IMailUI parent) {
 		super(parent, "listView", "전체 메일 보기");
 		//emailPerPage = ;
 		//curPage = ;
@@ -32,13 +32,13 @@ public class ReceivedListViewState extends BaseMailState{
 		
 		boolean flagStateFinished = false;
 		while(!flagStateFinished) {
-			emailList = EmailService.getInstance().getEmailList(1, emailPerPage, curPage);
+			emailList = EmailService.getInstance().getEmailList(3, emailPerPage, curPage);
 			
-			System.out.printf("%-5s%-5s%-15s%-7s%-7s%-5s\n","번호", "코드", "제목", "보낸이", "아이디", "받은날짜");
+			System.out.printf("%-5s%-5s%-15s%-7s%-7s%-7s%-7s%-5s\n","번호", "코드", "제목", "보내는이", "아이디", "받는이", "아이디", "받은날짜");
 			
 			for(int i = 0; i < emailList.size(); i++) {
 				EmailVO item = emailList.get(i);
-				System.out.printf("%-6d%-6d%-15s%-7s%-7s%-5s\n", (curPage-1)*emailPerPage + 1 + i, item.getCode(), item.getTitle(), item.getSenderName(), item.getSenderID(), item.getDate());
+				System.out.printf("%-6d%-6d%-15s%-7s%-7s%-7s%-7s%-5s\n", (curPage-1)*emailPerPage + 1 + i, item.getCode(), item.getTitle(), item.getSenderName(), item.getSenderID(), item.getReceiverName(), item.getReceiverID(), item.getDate());
 			}
 			
 			System.out.println("현제페이지: " + curPage);
@@ -61,7 +61,7 @@ public class ReceivedListViewState extends BaseMailState{
 					try {
 						int n = Integer.parseInt(input);
 						if(n >= (curPage-1)*emailPerPage + 1 & n <= curPage*emailPerPage) {
-							ViewManager.getInstance().ViewMail(1, emailList.get(n - 1 - (curPage - 1) * emailPerPage).getCode());
+							ViewManager.getInstance().ViewMail(3, emailList.get(n - 1 - (curPage - 1) * emailPerPage).getCode());
 							flagInt = true;
 						}
 					} catch (Exception e) {}

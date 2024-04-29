@@ -9,6 +9,7 @@ import java.util.List;
 import kr.ac.kopo.util.ConnectionFactory;
 import kr.ac.kopo.vo.AccountIDVO;
 import kr.ac.kopo.vo.AccountVO;
+import kr.ac.kopo.vo.EmailVO;
 import kr.ac.kopo.vo.ProfileVO;
 
 public class ProfileDAO {
@@ -109,6 +110,84 @@ public class ProfileDAO {
 		return account;
 	}
 	
+	public ProfileVO getAccount(AccountIDVO id) {
+
+		ProfileVO profile = null;
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT * "
+				+ "FROM EMAILDOTCOM_PROFILE "
+				+ "WHERE ID = ? ");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.setString(1, id.getID());
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				profile = new ProfileVO();
+				String passwd = rs.getString("PASSWD");
+				String name = rs.getString("NM");
+				String birthday = rs.getString("BIRTHDAY");
+				String email = rs.getString("EMAIL");
+				profile.setID(id.getID());
+				profile.setPassword(passwd);
+				profile.setName(name);
+				profile.setBirthday(birthday);
+				profile.setEmail(email);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return profile;
+	}
+	
+	public void sendEmail(EmailVO email) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("INSERT INTO EMAILDOTCOM_"+ email.getReceiverID() +"_RECEIVED_MAIL (CODE, SENDER_ID, SENDER_NAME, RECEIVER_ID, RECEIVER_NAME, TITLE, DETAIL, BELONG) "
+				+ " VALUES(SEQ_EMAILDOTCOM_RECEIVED_EMAIL_CODE.NEXTVAL, ?, ?, ?, ?, ?, ?, 'RECEIVED') ");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.setString(1, email.getSenderID());
+			pstmt.setString(2, email.getSenderName());
+			pstmt.setString(3, email.getReceiverID());
+			pstmt.setString(4, email.getReceiverName());
+			pstmt.setString(5, email.getTitle());
+			pstmt.setString(6, email.getDetail());
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addSentEmail(EmailVO email) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("INSERT INTO EMAILDOTCOM_"+ email.getSenderID() +"_SENT_MAIL (CODE, SENDER_ID, SENDER_NAME, RECEIVER_ID, RECEIVER_NAME, TITLE, DETAIL, BELONG) "
+				+ " VALUES(SEQ_EMAILDOTCOM_SENT_EMAIL_CODE.NEXTVAL, ?, ?, ?, ?, ?, ?, 'SENT') ");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.setString(1, email.getSenderID());
+			pstmt.setString(2, email.getSenderName());
+			pstmt.setString(3, email.getReceiverID());
+			pstmt.setString(4, email.getReceiverName());
+			pstmt.setString(5, email.getTitle());
+			pstmt.setString(6, email.getDetail());
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean IsAccountExist(AccountIDVO id) {
 		
 		boolean flagExist = false;
@@ -157,5 +236,80 @@ public class ProfileDAO {
 		}
 		
 		return flagExist;
+	}
+	
+	public void createSentEmail(ProfileVO profile) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("CREATE TABLE EMAILDOTCOM_"+ profile.getID() +"_SENT_MAIL(\n"
+				+ "	CODE	INTEGER 	PRIMARY KEY,\n"
+				+ "	SENDER_ID      VARCHAR(20)    NOT NULL,\n"
+				+ "	SENDER_NAME    VARCHAR(20)  	 NOT NULL,\n"
+				+ " RECEIVER_ID    VARCHAR(20)    NOT NULL,\n"
+				+ " RECEIVER_NAME  VARCHAR(20)    NOT NULL,\n"
+				+ "	SNT_DATE       DATE DEFAULT 	 SYSDATE,\n"
+				+ " TITLE          VARCHAR(100)   NOT NULL,\n"
+				+ " DETAIL         VARCHAR(1000)  NOT NULL,\n"
+				+ " BELONG         VARCHAR(10)    NOT NULL\n"
+				+ ")");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void createReceivedEmail(ProfileVO profile) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("CREATE TABLE EMAILDOTCOM_"+ profile.getID() +"_RECEIVED_MAIL(\n"
+				+ "	CODE	INTEGER 	PRIMARY KEY,\n"
+				+ "	SENDER_ID      VARCHAR(20)    NOT NULL,\n"
+				+ "	SENDER_NAME    VARCHAR(20)  	 NOT NULL,\n"
+				+ " RECEIVER_ID    VARCHAR(20)    NOT NULL,\n"
+				+ " RECEIVER_NAME  VARCHAR(20)    NOT NULL,\n"
+				+ "	SNT_DATE       DATE DEFAULT 	 SYSDATE,\n"
+				+ " TITLE          VARCHAR(100)   NOT NULL,\n"
+				+ " DETAIL         VARCHAR(1000)  NOT NULL,\n"
+				+ " BELONG         VARCHAR(10)    NOT NULL\n"
+				+ ")");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void createRecycleEmail(ProfileVO profile) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("CREATE TABLE EMAILDOTCOM_"+ profile.getID() +"_RECYCLEBIN_MAIL(\n"
+				+ "	CODE	INTEGER 	PRIMARY KEY,\n"
+				+ "	SENDER_ID      VARCHAR(20)    NOT NULL,\n"
+				+ "	SENDER_NAME    VARCHAR(20)  	 NOT NULL,\n"
+				+ " RECEIVER_ID    VARCHAR(20)    NOT NULL,\n"
+				+ " RECEIVER_NAME  VARCHAR(20)    NOT NULL,\n"
+				+ "	SNT_DATE       DATE DEFAULT 	 SYSDATE,\n"
+				+ " TITLE          VARCHAR(100)   NOT NULL,\n"
+				+ " DETAIL         VARCHAR(1000)  NOT NULL,\n"
+				+ " BELONG         VARCHAR(10)    NOT NULL\n"
+				+ ")");
+		
+		try(
+			Connection conn = new ConnectionFactory().getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+		){
+			pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
