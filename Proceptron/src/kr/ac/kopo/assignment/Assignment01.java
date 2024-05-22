@@ -45,15 +45,19 @@ public class Assignment01 {
 		List<Double> YHat;
 		double curWeight = rd.nextDouble();
 		double preWeight = 0;
-		double curBios = rd.nextInt(1,10);
-		double preBios = 0;
+		double curBias = rd.nextInt(1,10);
+		double preBias = 0;
+		double weightIncrenation = 0;
+		double biasIncrenation = 0;
+		boolean flagWeightOver = false;
+		boolean flagBiasOver = false;
 		double mse = 0;
 		double preMse = 0;
 		
 		for(int i = 0; i<Epoch; i++) {
 			YHat = new ArrayList<Double>();
 			for (var item : X) {
-				YHat.add(curWeight * item + curBios);
+				YHat.add(curWeight * item + curBias);
 			}
 			
 			mse = 0;
@@ -61,26 +65,46 @@ public class Assignment01 {
 				mse += Math.pow(YHat.get(j) - Y.get(j),2);
 			}
 			
+			weightIncrenation = (preMse-mse)/(preWeight-curWeight);
+			biasIncrenation = (preMse-mse)/(preBias-curBias);
+			
+			flagWeightOver = false;
+			if(weightIncrenation == 0)
+				flagWeightOver = true;
+			
+			flagBiasOver = false;
+			if(biasIncrenation == 0)
+				flagBiasOver = true;
+			
+			if(flagWeightOver && flagBiasOver) {
+				System.out.println("조기종료");
+				break;
+			}
+			
 			System.out.printf("%d번째 시도 MSE : %.4f\n",i+1,mse);
 			System.out.println(curWeight);
 			System.out.println(preWeight);
+			System.out.println(curBias);
+			System.out.println(preBias);
+			System.out.println(mse);
+			System.out.println(preMse);
 			System.out.println();
 			
 			double tmpPreWeight = curWeight;
-			double tmpPreBios = curBios;
+			double tmpPreBias = curBias;
 			
-			curWeight = curWeight - A*(mse-preMse)/(curWeight-preWeight);
-			curBios = curBios - A*(mse-preMse)/(curBios-preBios);
+			curWeight = curWeight - A*weightIncrenation;
+			curBias = curBias - A*biasIncrenation;
 
 			preWeight = tmpPreWeight;
-			preBios = tmpPreBios;
+			preBias = tmpPreBias;
 			preMse = mse;
 		}
 		
 		System.out.println();
 		System.out.println("결과:");
 		System.out.printf("weight: %.4f\n", curWeight);
-		System.out.printf("bios: %.4f\n", curBios);
+		System.out.printf("bios: %.4f\n", curBias);
 		System.out.printf("Loss: %.4f\n", mse);
 	}
 }
