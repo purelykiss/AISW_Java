@@ -57,6 +57,9 @@
 
 <summary> 더보기 </summary>
 * JVM이란
+
+![JVM구조](https://github.com/user-attachments/assets/5fff1c24-b5ac-48ec-890a-54cdcd647ab1)
+
   * java virtual machine(JVM)
   * interpreter
 
